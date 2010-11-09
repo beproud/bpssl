@@ -7,8 +7,8 @@ setup (
     name='bpssl',
     version='1.0',
     description='SSL/HTTPS for Django',
-    author='K.K. BeProud',
-    author_email='ianmlewis@beproud.jp',
+    author='Ian Lewis',
+    author_email='ian@beproud.jp',
     url='http://bitbucket.org/beproud/bpssl/',
     classifiers=[
       'Development Status :: 5 - Production/Stable',
