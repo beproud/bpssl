@@ -38,3 +38,18 @@ bpssl provides an ``ssl_view()`` decorator which can be used instead of the
 
 .. _flatpages: http://docs.djangoproject.com/en/dev/ref/contrib/flatpages/
 .. _Fastcgi: http://docs.djangoproject.com/en/dev/howto/deployment/fastcgi
+
+Development
+---------------------
+
+Generally you will want to develop bpssl in a virtualenv with pip::
+
+    $ mkvirtualenv bpssl
+
+You can install the requirements using the requirements.txt and pip::
+    
+    $ pip install -r requirements.txt
+
+And run tests normally using setup.py::
+
+    $ python setup.py test 
