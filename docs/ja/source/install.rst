@@ -122,7 +122,7 @@ man-in-the-middle 攻撃を避けるために、 HTTP リクエストの場合�
             
             # We need to set this header for HTTP requests as well
             # so that we won't fall victim to man-in-the-middle attacks.
-            proxy_set_header HTTP_X_FORWARDED_PROTOCOL      "http";
+            proxy_set_header X_FORWARDED_PROTOCOL      "http";
             # ...
         }
     }
@@ -136,7 +136,7 @@ man-in-the-middle 攻撃を避けるために、 HTTP リクエストの場合�
             proxy_pass          http://myproxy;    
             # This should be set to the same headeras the
             # non-ssl setup above.
-            proxy_set_header    HTTP_X_FORWARDED_PROTOCOL   https; 
+            proxy_set_header    X_FORWARDED_PROTOCOL   https; 
             # ...
         }
     }
