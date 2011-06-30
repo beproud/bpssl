@@ -11,7 +11,8 @@ redirect the user to the equivalent HTTPS page.
 Specifying views and urls as secure is supported as are `flatpages`_. `Fastcgi`_
 and HTTP proxy setups are also well supported. See the documentation at:
 
-http://beproud.bitbucket.org/bpssl-1.0/
+* English: http://beproud.bitbucket.org/bpssl-1.0/en/
+* 日本語: http://beproud.bitbucket.org/bpssl-1.0/ja/
 
 bpssl draws inspiration from the well known SSL Middleware snippets on
 djangosnippets.org. It roughly supports the features of the following
@@ -20,6 +21,8 @@ snippets:
 * http://djangosnippets.org/snippets/880/
 * http://djangosnippets.org/snippets/240/
 * http://djangosnippets.org/snippets/1999/
+
+Please file bugs at: http://bitbucket.org/beproud/bpssl/issues/
 
 Middleware
 ---------------------
@@ -48,7 +51,7 @@ Generally you will want to develop bpssl in a virtualenv with pip::
 
 You can install the requirements using the requirements.txt and pip::
     
-    $ pip install -r requirements.txt
+    $ pip install -r setup/requirements.txt
 
 And run tests normally using setup.py::
 
