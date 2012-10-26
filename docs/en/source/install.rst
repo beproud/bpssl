@@ -158,10 +158,25 @@ in conjunction with the
         }
     }
 
-.. Apache/FastCGI
-.. +++++++++++++++++++++++++++++
-.. 
-.. TODO: Write later
+Apache/FastCGI
++++++++++++++++++++++++++++++
+
+With Apache/FastCGI you can setting the HTTPS environment variable should be sufficient to
+get `request.is_secure()`_ to work in a FastCGI environment. You can add the environment
+variable to FastCGI using the Apache rewrite module like so:
+
+.. code-block:: apache
+
+    <VirtualHost *:443>
+        SSLEngine on
+        # ...
+
+        RewriteEngine on
+        RewriteCond %{HTTPS} on
+        RewriteRule .* - [E=HTTPS:on]
+
+        # ...
+    </VirtualHost>
 
 Apache/mod_wsgi
 +++++++++++++++++++++++++++++
