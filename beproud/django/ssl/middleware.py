@@ -1,7 +1,7 @@
 # vim:fileencoding=utf8
 import re
 
-from django.http import HttpResponseRedirect, Http404, get_host
+from django.http import HttpResponseRedirect, Http404
 from django.conf import settings as django_settings
 from django.core import urlresolvers
 
@@ -88,9 +88,9 @@ class SSLMiddleware(object):
         # TODO: Use django site framework instead of HTTP_HOST/SSL_HOST?
         protocol = secure and "https" or "http"
         if secure:
-            host = getattr(django_settings, 'SSL_HOST', get_host(request))
+            host = getattr(django_settings, 'SSL_HOST', request.get_host())
         else:
-            host = getattr(django_settings, 'HTTP_HOST', get_host(request))
+            host = getattr(django_settings, 'HTTP_HOST', request.get_host())
         newurl = "%s://%s%s" % (protocol,host,request.get_full_path())
         if django_settings.DEBUG and request.method == 'POST':
             raise RuntimeError, \
