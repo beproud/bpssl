@@ -25,7 +25,7 @@ snippets:
 Please file bugs at: http://bitbucket.org/beproud/bpssl/issues/
 
 Middleware
----------------------
+=====================
 
 bpssl provides an ``SSLRedirectMiddleware`` which can redirect users from
 secure pages to non-secure pages and visa-versa. Urls are set up by adding
@@ -34,7 +34,7 @@ regular expressions to the ``SSL_URLS`` setting in settings.py.
 cases.
 
 ssl_view decorator
----------------------
+=====================
 
 bpssl provides an ``ssl_view()`` decorator which can be used instead of the
 ``SSL_URLS`` to specify that a particular view should be secure.
@@ -43,7 +43,7 @@ bpssl provides an ``ssl_view()`` decorator which can be used instead of the
 .. _Fastcgi: http://docs.djangoproject.com/en/dev/howto/deployment/fastcgi
 
 Development
----------------------
+=====================
 
 Generally you will want to develop bpssl in a virtualenv with pip::
 

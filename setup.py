@@ -5,9 +5,9 @@ from setuptools import setup, find_packages
  
 setup (
     name='bpssl',
-    version='1.0.1',
+    version='1.0.2',
     description='SSL/HTTPS for Django',
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst').read() + '\n' + open('CHANGES.rst').read(),
     author='Ian Lewis',
     author_email='ian@beproud.jp',
     url='http://bitbucket.org/beproud/bpssl/',
