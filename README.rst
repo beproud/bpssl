@@ -11,8 +11,8 @@ redirect the user to the equivalent HTTPS page.
 Specifying views and urls as secure is supported as are `flatpages`_. `Fastcgi`_
 and HTTP proxy setups are also well supported. See the documentation at:
 
-* English: http://beproud.bitbucket.org/bpssl-1.0/en/
-* 日本語: http://beproud.bitbucket.org/bpssl-1.0/ja/
+* English: http://beproud.bitbucket.org/bpssl-1.0.2/en/
+* 日本語: http://beproud.bitbucket.org/bpssl-1.0.2/ja/
 
 bpssl draws inspiration from the well known SSL Middleware snippets on
 djangosnippets.org. It roughly supports the features of the following
