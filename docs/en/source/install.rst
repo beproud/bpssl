@@ -158,6 +158,11 @@ in conjunction with the
         }
     }
 
+.. Apache・HTTP proxy
+.. +++++++++++++++++++++++++++++
+.. 
+.. TODO
+
 Apache/FastCGI
 +++++++++++++++++++++++++++++
 

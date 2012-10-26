@@ -141,13 +141,30 @@ man-in-the-middle 攻撃を避けるために、 HTTP リクエストの場合�
         }
     }
 
-
-
-
-.. Apache・FastCGIの場合
+.. Apache・HTTP proxyの場合
 .. +++++++++++++++++++++++++++++
 .. 
-.. TODO: 後で書く
+.. TODO
+
+Apache・FastCGIの場合
++++++++++++++++++++++++++++++
+
+Apache・FastCGIの場合は、HTTPS の環境変数を設定したら、 `request.is_secure()`_ は
+正しく動作するはず。Apache の rewrite モジュールで、以下の様に HTTPS 環境変数を
+設定できます。
+
+.. code-block:: apache
+
+    <VirtualHost *:443>
+        SSLEngine on
+        # ...
+
+        RewriteEngine on
+        RewriteCond %{HTTPS} on
+        RewriteRule .* - [E=HTTPS:on]
+
+        # ...
+    </VirtualHost>
 
 Apache・mod_wsgiの場合
 +++++++++++++++++++++++++++++
