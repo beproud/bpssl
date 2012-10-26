@@ -1,2 +1,2 @@
-include README.rst AUTHORS LICENSE requirements.txt tests.py
+include README.rst CHANGES.rst AUTHORS LICENSE requirements.txt tests.py
 recursive-include docs *
