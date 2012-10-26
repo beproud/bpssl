@@ -27,5 +27,8 @@ setup (
         'beproud',
         'beproud.django',
     ],
+    install_requires=[
+        'Django>=1.2',
+    ],
     test_suite='tests.main',
 )
