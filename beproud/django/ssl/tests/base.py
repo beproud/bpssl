@@ -2,10 +2,7 @@
 
 from urlparse import urlsplit, urlunsplit
 
-from django.core import exceptions
-from django.utils.importlib import import_module
-from django.test import TestCase as DjangoTestCase
-from django.http import HttpRequest, HttpResponse, QueryDict
+from django.http import QueryDict
 from django.conf import settings as django_settings
 
 from beproud.django.ssl.conf import settings
@@ -163,12 +160,9 @@ class UseSSLTests(object):
 class FlatpageTests(object):
     def setUp(self):
         super(FlatpageTests,self).setUp()
-        import os
         from django.contrib.flatpages.models import FlatPage
         from django.contrib.sites.models import Site
 
-        self._old_TEMPLATE_DIRS = django_settings.TEMPLATE_DIRS
-        django_settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
         django_settings.MIDDLEWARE_CLASSES += (
             'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
         )
@@ -190,10 +184,6 @@ class FlatpageTests(object):
             registration_required=False,
         )
         fp.sites.add(Site.objects.get_current())
-
-    def tearDown(self):
-        super(FlatpageTests,self).tearDown()
-        django_settings.TEMPLATE_DIRS = self._old_TEMPLATE_DIRS
 
     def test_http_flatpage_http(self):
         self.assertContains(self.get('/flatpage/'), 'Non-secure Flatpage')

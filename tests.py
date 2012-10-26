@@ -13,6 +13,10 @@ def main():
     os.environ["DJANGO_SETTINGS_MODULE"] = "django.conf.global_settings"
     from django.conf import global_settings
 
+    global_settings.SECRET_KEY = "snakeoil"
+    global_settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__),
+                                      'beproud', 'django', 'ssl', 'tests', 'templates'),)
+
     global_settings.INSTALLED_APPS = (
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -22,8 +26,13 @@ def main():
     )
     global_settings.SITE_ID=1
     global_settings.ROOT_URLCONF='beproud.django.ssl.tests.urls'
-    global_settings.DATABASE_ENGINE = "sqlite3"
-    global_settings.DATABASE_NAME = ":memory:"
+    global_settings.DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+
     global_settings.SSL_URLS = (
         '^/sslurl/',
     )
@@ -34,11 +43,8 @@ def main():
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
-    if django.VERSION > (1,2):
-        test_runner = test_runner()
-        failures = test_runner.run_tests(['ssl'])
-    else:
-        failures = test_runner(['ssl'], verbosity=1)
+    test_runner = test_runner()
+    failures = test_runner.run_tests(['ssl'])
     sys.exit(failures)
 
 if __name__ == '__main__':
