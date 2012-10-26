@@ -31,7 +31,21 @@ bpssl をインストールするのが簡単ですが、ウェブサーバー�
         #...
     )
 
-.. TODO: Context processor
+コンテキストプロセッサー
+-----------------------------
+
+.. function:: beproud.django.ssl.context_processors.conf
+
+:func:`beproud.django.ssl.context_processors.conf` コンテキストプロセッサーを
+`TEMPLATE_CONTEXT_PROCESSORS`_ に追加してください。
+
+.. code-block:: python
+
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        #...
+        'beproud.django.ssl.context_processors.conf',
+        #...
+    )
 
 ミドルウエアを設定
 -----------------------------
@@ -175,3 +189,4 @@ Apache・mod_wsgi を使う場合は、 ``wsgi.url_scheme`` が設定してい�
 .. _`request.is_secure()`: http://djangoproject.jp/doc/ja/1.0/ref/request-response.html#django.http.HttpRequest.is_secure
 .. _`INSTALLED_APPS`: http://djangoproject.jp/doc/ja/1.0/ref/settings.html#installed-apps
 .. _`MIDDLEWARE_CLASSES`: http://djangoproject.jp/doc/ja/1.0/ref/settings.html#setting-MIDDLEWARE_CLASSES 
+.. _`TEMPLATE_CONTEXT_PROCESSORS`: http://djangoproject.jp/doc/ja/1.0/ref/settings.html#template-context-processors

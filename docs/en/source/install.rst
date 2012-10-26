@@ -37,7 +37,7 @@ Context Processor Setup
 
 .. function:: beproud.django.ssl.context_processors.conf
 
-Add the :func:`ssl <beproud.django.ssl.context_processors.conf>` context processor to
+Add the :func:`beproud.django.ssl.context_processors.conf` context processor to
 your `TEMPLATE_CONTEXT_PROCESSORS`_ setting.
 
 .. code-block:: python
