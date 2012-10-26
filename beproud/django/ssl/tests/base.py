@@ -2,12 +2,74 @@
 
 from urlparse import urlsplit, urlunsplit
 
+import django
 from django.http import QueryDict
 from django.conf import settings as django_settings
 
 from beproud.django.ssl.conf import settings
 
 AVAILABLE_SETTINGS = ['SSL_REQUEST_HEADER',]
+
+def request_factory(method, path, data={}, **extra):
+    if django.VERSION >= (1,3):
+        from django.test.client import RequestFactory
+
+        return getattr(RequestFactory(), method)(
+            path=path,
+            data=data,
+            **extra
+        )
+    else:
+        import urlparse
+        import urllib
+        from django.http import SimpleCookie
+        from django.utils.http import urlencode
+        from django.core.handlers.wsgi import WSGIRequest
+        from django.test.client import FakePayload
+        try:
+            from cStringIO import StringIO
+        except ImportError:
+            from StringIO import StringIO
+
+        # This is a minimal valid WSGI environ dictionary, plus:
+        # - HTTP_COOKIE: for cookie support,
+        # - REMOTE_ADDR: often useful, see #8551.
+        # See http://www.python.org/dev/peps/pep-3333/#environ-variables
+        environ = {
+            'HTTP_COOKIE':       SimpleCookie().output(header='', sep='; '),
+            'PATH_INFO':         '/',
+            'REMOTE_ADDR':       '127.0.0.1',
+            'REQUEST_METHOD':    'GET',
+            'SCRIPT_NAME':       '',
+            'SERVER_NAME':       'testserver',
+            'SERVER_PORT':       '80',
+            'SERVER_PROTOCOL':   'HTTP/1.1',
+            'wsgi.version':      (1,0),
+            'wsgi.url_scheme':   'http',
+            'wsgi.input':        FakePayload(''),
+            'wsgi.errors':       StringIO(),
+            'wsgi.multiprocess': True,
+            'wsgi.multithread':  False,
+            'wsgi.run_once':     False,
+        }
+
+        parsed = urlparse.urlparse(path)
+        # If there are parameters, add them
+        if parsed[3]:
+            path = urllib.unquote(parsed[2] + ";" + parsed[3])
+        else:
+            path = urllib.unquote(parsed[2])
+
+        r = {
+            'CONTENT_TYPE':    'text/html; charset=utf-8',
+            'PATH_INFO':       path,
+            'QUERY_STRING':    urlencode(data, doseq=True) or parsed[4],
+            'REQUEST_METHOD':  method.upper(),
+        }
+        environ.update(r)
+        environ.update(extra)
+
+        return WSGIRequest(environ)
 
 class BaseTestCase(object):
     SSL_REQUEST_HEADER = None
