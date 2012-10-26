@@ -1,8 +1,6 @@
 CHANGES
 =======
 
-Fixed SSL_REQUEST_HEADER setting to use the custom setting, if available
-
 1.0.2
 ------
 
