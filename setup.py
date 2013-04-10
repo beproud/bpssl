@@ -2,6 +2,11 @@
 #:coding=utf-8:
 
 from setuptools import setup, find_packages
+import sys
+
+extra = {}
+if sys.version_info >= (3,):
+    extra['use_2to3'] = True
  
 setup (
     name='bpssl',
@@ -20,6 +25,7 @@ setup (
       'License :: OSI Approved :: BSD License',
       'Operating System :: OS Independent',
       'Programming Language :: Python',
+      'Programming Language :: Python :: 3',
       'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),
@@ -31,4 +37,5 @@ setup (
         'Django>=1.2',
     ],
     test_suite='tests.main',
+    **extra
 )
