@@ -8,10 +8,11 @@ from django.conf import settings as django_settings
 
 from beproud.django.ssl.conf import settings
 
-AVAILABLE_SETTINGS = ['SSL_REQUEST_HEADER',]
+AVAILABLE_SETTINGS = ['SSL_REQUEST_HEADER']
+
 
 def request_factory(method, path, data={}, **extra):
-    if django.VERSION >= (1,3):
+    if django.VERSION >= (1, 3):
         from django.test.client import RequestFactory
 
         return getattr(RequestFactory(), method)(
@@ -44,7 +45,7 @@ def request_factory(method, path, data={}, **extra):
             'SERVER_NAME':       'testserver',
             'SERVER_PORT':       '80',
             'SERVER_PROTOCOL':   'HTTP/1.1',
-            'wsgi.version':      (1,0),
+            'wsgi.version':      (1, 0),
             'wsgi.url_scheme':   'http',
             'wsgi.input':        FakePayload(''),
             'wsgi.errors':       StringIO(),
@@ -71,6 +72,7 @@ def request_factory(method, path, data={}, **extra):
 
         return WSGIRequest(environ)
 
+
 class BaseTestCase(object):
     SSL_REQUEST_HEADER = None
     MIDDLEWARE_CLASSES = (
@@ -91,7 +93,7 @@ class BaseTestCase(object):
     def tearDown(self):
         if self.MIDDLEWARE_CLASSES != self._old_MIDDLEWARE_CLASSES:
             django_settings.MIDDLEWARE_CLASSES = self._old_MIDDLEWARE_CLASSES
- 
+
         for setting_name in AVAILABLE_SETTINGS:
             old_setting_value = getattr(self, "_old_"+setting_name, None)
             if old_setting_value is None:
@@ -113,60 +115,74 @@ class BaseTestCase(object):
 
         if hasattr(response, 'redirect_chain'):
             # The request was a followed redirect
-            self.failUnless(len(response.redirect_chain) > 0,
+            self.failUnless(
+                len(response.redirect_chain) > 0,
                 msg_prefix + "Response didn't redirect as expected: Response"
-                " code was %d (expected %d)" %
-                    (response.status_code, status_code))
+                " code was %d (expected %d)" % (response.status_code, status_code)
+            )
 
-            self.assertEqual(response.redirect_chain[0][1], status_code,
+            self.assertEqual(
+                response.redirect_chain[0][1], status_code,
                 msg_prefix + "Initial response didn't redirect as expected:"
                 " Response code was %d (expected %d)" %
-                    (response.redirect_chain[0][1], status_code))
+                (response.redirect_chain[0][1], status_code)
+            )
 
             url, status_code = response.redirect_chain[-1]
 
-            self.assertEqual(response.status_code, target_status_code,
+            self.assertEqual(
+                response.status_code, target_status_code,
                 msg_prefix + "Response didn't redirect as expected: Final"
-                " Response code was %d (expected %d)" %
-                    (response.status_code, target_status_code))
+                " Response code was %d (expected %d)" % (response.status_code, target_status_code)
+            )
 
         else:
             # Not a followed redirect
-            self.assertEqual(response.status_code, status_code,
+            self.assertEqual(
+                response.status_code, status_code,
                 msg_prefix + "Response didn't redirect as expected: Response"
-                " code was %d (expected %d)" %
-                    (response.status_code, status_code))
+                " code was %d (expected %d)" % (response.status_code, status_code)
+            )
 
             url = response['Location']
             scheme, netloc, path, query, fragment = urlsplit(url)
 
-            redirect_response = self.get(urlunsplit((scheme, netloc, path, None, None)), QueryDict(query))
+            redirect_response = self.get(
+                urlunsplit((scheme, netloc, path, None, None)),
+                QueryDict(query),
+            )
 
             # Get the redirection page, using the same client that was used
             # to obtain the original response.
-            self.assertEqual(redirect_response.status_code, target_status_code,
+            self.assertEqual(
+                redirect_response.status_code, target_status_code,
                 msg_prefix + "Couldn't retrieve redirection page '%s':"
                 " response code was %d (expected %d)" %
-                    (path, redirect_response.status_code, target_status_code))
+                (path, redirect_response.status_code, target_status_code)
+            )
 
         e_scheme, e_netloc, e_path, e_query, e_fragment = urlsplit(expected_url)
         if not (e_scheme or e_netloc):
-            expected_url = urlunsplit(('http', host or 'testserver', e_path,
-                e_query, e_fragment))
+            expected_url = urlunsplit(('http', host or 'testserver', e_path, e_query, e_fragment))
 
-        self.assertEqual(url, expected_url,
-            msg_prefix + "Response redirected to '%s', expected '%s'" %
-                (url, expected_url))
+        self.assertEqual(
+            url,
+            expected_url,
+            msg_prefix + "Response redirected to '%s', expected '%s'" % (url, expected_url),
+        )
 
     def request(self, path, method='GET', https=False, headers={}):
         if https or urlsplit(path)[0] == 'https':
             headers = headers.copy()
             headers.update({'SERVER_PORT': '443'})
         return getattr(self.client, method.lower())(path, **headers)
+
     def get(self, path, https=False, headers={}):
         return self.request(path, https=https, headers=headers)
+
     def post(self, path, https=False, headers={}):
         return self.request(path, method='POST', https=https, headers=headers)
+
 
 class SSLRedirectTests(object):
 
@@ -186,6 +202,7 @@ class SSLRedirectTests(object):
         response = self.get("/some/other/url", https=True)
         self.assertRedirects(response, "http://testserver/some/other/url")
 
+
 class SSLDecoratorTests(object):
 
     def test_http_redirect(self):
@@ -196,13 +213,14 @@ class SSLDecoratorTests(object):
         response = self.get("/decorated/ssl/view", https=True)
         self.assertContains(response, "Spam and Eggs")
 
+
 class UseSSLTests(object):
     def setUp(self):
         self._old_USE_SSL = settings.USE_SSL
         settings.USE_SSL = False
 
     def tearDown(self):
-        settings.USE_SSL = self._old_USE_SSL 
+        settings.USE_SSL = self._old_USE_SSL
 
     def test_use_ssl_decorator(self):
         response = self.get("/decorated/ssl/view")
@@ -210,7 +228,7 @@ class UseSSLTests(object):
 
         response = self.get("/decorated/ssl/view", https=True)
         self.assertContains(response, "Spam and Eggs")
-         
+
     def test_use_ssl_middleware(self):
         response = self.get("/sslurl/someurl")
         self.assertContains(response, "Spam and Eggs")
@@ -219,9 +237,10 @@ class UseSSLTests(object):
         response = self.get("/sslurl/someurl", https=True)
         self.assertContains(response, "Spam and Eggs")
 
+
 class FlatpageTests(object):
     def setUp(self):
-        super(FlatpageTests,self).setUp()
+        super(FlatpageTests, self).setUp()
         from django.contrib.flatpages.models import FlatPage
         from django.contrib.sites.models import Site
 
@@ -263,7 +282,7 @@ class FlatpageTests(object):
         )
 
     def test_https_flatpage_https(self):
-        self.assertContains(    
+        self.assertContains(
             self.get('/sslurl/flatpage/', https=True),
             'Secure Flatpage',
         )

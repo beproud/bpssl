@@ -13,6 +13,7 @@ __all__ = (
     'SSLProxyMiddleware',
 )
 
+
 class SSLMiddleware(object):
     """
     Redirects all http requests to the equivalent https url
@@ -20,8 +21,8 @@ class SSLMiddleware(object):
     def process_request(self, request):
         """
         Processes the request and redirects to the appropriate
-        url if necessary. 
-        
+        url if necessary.
+
         Processing is done by process_request rather than
         process_view because if a url is not matched
         then process_view is not called and some badly implemented
@@ -91,13 +92,14 @@ class SSLMiddleware(object):
             host = getattr(django_settings, 'SSL_HOST', request.get_host())
         else:
             host = getattr(django_settings, 'HTTP_HOST', request.get_host())
-        newurl = "%s://%s%s" % (protocol,host,request.get_full_path())
+        newurl = "%s://%s%s" % (protocol, host, request.get_full_path())
         if django_settings.DEBUG and request.method == 'POST':
-            raise RuntimeError, \
-        """Django can't perform a SSL redirect while maintaining POST data.
-           Please structure your views so that redirects only occur during GETs."""
+            raise RuntimeError(
+                """Django can't perform a SSL redirect while maintaining POST data.
+                   Please structure your views so that redirects only occur during GETs.""")
 
         return HttpResponseRedirect(newurl)
+
 
 class SSLRedirectMiddleware(SSLMiddleware):
     """
@@ -111,7 +113,7 @@ class SSLRedirectMiddleware(SSLMiddleware):
         self.urls = map(lambda u: re.compile(u) if isinstance(u, basestring) else u, urls)
         if not ignore_urls:
             ignore_urls = settings.SSL_IGNORE_URLS
-        self.ignore_urls = map(lambda u: re.compile(u) if isinstance(u, basestring) else u, ignore_urls)
+        self.ignore_urls = [re.compile(u) if isinstance(u, basestring) else u for u in ignore_urls]
 
     def is_handle_url(self, request):
         """
@@ -140,6 +142,7 @@ class SSLRedirectMiddleware(SSLMiddleware):
                 break
         return secure
 
+
 class SSLProxyMiddleware(object):
     """
     Patches the request object so that is_secure() returns True
@@ -164,6 +167,5 @@ class SSLProxyMiddleware(object):
 
     def process_request(self, request):
         if self.header_name:
-            if request.META.get(self.header_name,'').lower() == self.header_value.lower():
+            if request.META.get(self.header_name, '').lower() == self.header_value.lower():
                 request.is_secure = lambda: True
-

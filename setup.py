@@ -7,8 +7,8 @@ import sys
 extra = {}
 if sys.version_info >= (3,):
     extra['use_2to3'] = True
- 
-setup (
+
+setup(
     name='bpssl',
     version='1.0.2',
     description='SSL/HTTPS for Django',
@@ -17,16 +17,16 @@ setup (
     author_email='ian@beproud.jp',
     url='http://bitbucket.org/beproud/bpssl/',
     classifiers=[
-      'Development Status :: 5 - Production/Stable',
-      'Framework :: Django',
-      'Environment :: Plugins',
-      'Environment :: Web Environment',
-      'Intended Audience :: Developers',
-      'License :: OSI Approved :: BSD License',
-      'Operating System :: OS Independent',
-      'Programming Language :: Python',
-      'Programming Language :: Python :: 3',
-      'Topic :: Software Development :: Libraries :: Python Modules',
+        'Development Status :: 5 - Production/Stable',
+        'Framework :: Django',
+        'Environment :: Plugins',
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages=find_packages(),
     namespace_packages=[

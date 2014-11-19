@@ -1,6 +1,6 @@
 #:coding=utf-8:
 
-from urlparse import urlsplit, urlunsplit
+from urlparse import urlsplit
 
 from django.test import TestCase as DjangoTestCase
 
@@ -8,6 +8,7 @@ from beproud.django.ssl.tests.base import (
     BaseTestCase, SSLRedirectTests, SSLDecoratorTests,
     UseSSLTests, FlatpageTests
 )
+
 
 class ProxyTestCase(BaseTestCase):
     SSL_REQUEST_HEADER = ('HTTP_X_FORWARDED_SSL', 'on')
@@ -22,14 +23,22 @@ class ProxyTestCase(BaseTestCase):
             headers.update({'HTTP_X_FORWARDED_SSL': 'ON'})
         return super(ProxyTestCase, self).request(path, method, https, headers)
 
+
 class ProxySSLRedirectTestCase(SSLRedirectTests, ProxyTestCase, DjangoTestCase):
     pass
+
+
 class ProxySSLDecoratorTestCase(SSLDecoratorTests, ProxyTestCase, DjangoTestCase):
     pass
+
+
 class ProxyUseSSLTestCase(UseSSLTests, ProxyTestCase, DjangoTestCase):
     pass
+
+
 class ProxyFlatpageTestCase(FlatpageTests, ProxyTestCase, DjangoTestCase):
     pass
+
 
 class ProxyProtocolTestCase(BaseTestCase):
     SSL_REQUEST_HEADER = ('HTTP_X_PROXY_REQUEST_PROTOCOL', 'https')
@@ -44,11 +53,18 @@ class ProxyProtocolTestCase(BaseTestCase):
             headers.update({'HTTP_X_PROXY_REQUEST_PROTOCOL': 'HTTPS'})
         return super(ProxyProtocolTestCase, self).request(path, method, https, headers)
 
+
 class ProxyProtocolSSLRedirectTestCase(SSLRedirectTests, ProxyProtocolTestCase, DjangoTestCase):
     pass
+
+
 class ProxyProtocolSSLDecoratorTestCase(SSLDecoratorTests, ProxyProtocolTestCase, DjangoTestCase):
     pass
+
+
 class ProxyProtocolUseSSLTestCase(UseSSLTests, ProxyProtocolTestCase, DjangoTestCase):
     pass
+
+
 class ProxyProtocolFlatpageTestCase(FlatpageTests, ProxyProtocolTestCase, DjangoTestCase):
     pass

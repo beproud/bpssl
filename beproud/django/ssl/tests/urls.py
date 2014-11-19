@@ -1,11 +1,13 @@
 #:coding=utf-8:
-from django.conf.urls.defaults import *
+
+from django.conf.urls.defaults import patterns
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 
 from beproud.django.ssl.decorators import ssl_view
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     (r'sslurl/someurl', lambda request: HttpResponse("Spam and Eggs")),
     (r'some/other/url', lambda request: HttpResponse("Spam and Eggs")),
     (r'decorated/ssl/view', ssl_view(lambda request: HttpResponse("Spam and Eggs"))),

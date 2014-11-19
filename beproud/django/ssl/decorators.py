@@ -6,6 +6,7 @@ from beproud.django.ssl.middleware import SSLMiddleware
 
 __all__ = ('ssl_view',)
 
+
 def ssl_view(view):
     """
     Requires that a view be accessed via SSL(HTTPS). Calls

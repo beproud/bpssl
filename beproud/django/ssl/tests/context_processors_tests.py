@@ -6,6 +6,7 @@ from beproud.django.ssl.context_processors import conf
 
 from beproud.django.ssl.tests.base import request_factory
 
+
 class ContextProcessorTestCase(DjangoTestCase):
     """
     Tests bpssl's context processors.

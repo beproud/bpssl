@@ -5,6 +5,7 @@ from beproud.django.ssl.conf import settings
 
 __all__ = ('conf',)
 
+
 def conf(request):
     return {
         'USE_SSL': settings.USE_SSL,
