@@ -1,8 +1,7 @@
 import os
 import sys
-import unittest
-import doctest
 import django
+
 
 def main():
     """
@@ -15,7 +14,7 @@ def main():
 
     global_settings.SECRET_KEY = "snakeoil"
     global_settings.TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__),
-                                      'beproud', 'django', 'ssl', 'tests', 'templates'),)
+                                     'beproud', 'django', 'ssl', 'tests', 'templates'),)
 
     global_settings.INSTALLED_APPS = (
         'django.contrib.auth',
@@ -24,8 +23,8 @@ def main():
         'django.contrib.sites',
         'beproud.django.ssl',
     )
-    global_settings.SITE_ID=1
-    global_settings.ROOT_URLCONF='beproud.django.ssl.tests.urls'
+    global_settings.SITE_ID = 1
+    global_settings.ROOT_URLCONF = 'beproud.django.ssl.tests.urls'
     global_settings.DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -40,11 +39,20 @@ def main():
         '^/static/',
     )
 
+    if django.VERSION > (1, 7):
+        django.setup()
+
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
+    if django.VERSION > (1, 6):
+        tests = ['beproud.django.ssl']
+    else:
+        tests = ['ssl']
+
     test_runner = test_runner()
-    failures = test_runner.run_tests(['ssl'])
+    failures = test_runner.run_tests(tests)
+
     sys.exit(failures)
 
 if __name__ == '__main__':

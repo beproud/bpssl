@@ -1,6 +1,14 @@
 #:coding=utf-8:
 
-from django.conf.urls.defaults import patterns
+try:
+    from django.conf.urls import patterns
+except ImportError:
+    # NOTE: Django <= 1.3
+    from django.conf.urls.defaults import patterns
+
+    # NOTE: For Django 1.2
+    from django.conf.urls.defaults import handler404, handler500  # NOQA
+
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 
