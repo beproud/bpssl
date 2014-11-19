@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+1.0.3
+------
+
+- Support for tests running up to Django 1.7 and Python 3.4
+
 1.0.2
 ------
 

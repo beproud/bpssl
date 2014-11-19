@@ -10,7 +10,7 @@ if sys.version_info >= (3,):
 
 setup(
     name='bpssl',
-    version='1.0.2',
+    version='1.0.3',
     description='SSL/HTTPS for Django',
     long_description=open('README.rst').read() + '\n' + open('CHANGES.rst').read(),
     author='Ian Lewis',
