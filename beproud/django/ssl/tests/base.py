@@ -40,7 +40,7 @@ def request_factory(method, path, data={}, **extra):
             'HTTP_COOKIE':       SimpleCookie().output(header='', sep='; '),
             'PATH_INFO':         '/',
             'REMOTE_ADDR':       '127.0.0.1',
-            'REQUEST_METHOD':    'GET',
+            'REQUEST_METHOD':    method.upper(),
             'SCRIPT_NAME':       '',
             'SERVER_NAME':       'testserver',
             'SERVER_PORT':       '80',

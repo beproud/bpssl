@@ -1,6 +1,9 @@
 # vim:fileencoding=utf8
-import re
 
+import re
+import warnings
+
+from django.core.exceptions import MiddlewareNotUsed
 from django.http import HttpResponseRedirect, Http404
 from django.conf import settings as django_settings
 from django.core import urlresolvers
@@ -157,7 +160,12 @@ class SSLProxyMiddleware(object):
     MIDDLEWARE_CLASSES setting.
     """
     def __init__(self, header_name=None, header_value=None):
+        warnings.warn("SSLProxyMiddleware is deprecated. "
+                      "Use the SECURE_PROXY_SSL_HEADER setting in Django 1.4+ instead.",
+                      DeprecationWarning)
+
         default_header_name, default_header_value = settings.SSL_REQUEST_HEADER
+
         if not header_name:
             header_name = default_header_name
         if not header_value:
@@ -168,4 +176,8 @@ class SSLProxyMiddleware(object):
     def process_request(self, request):
         if self.header_name:
             if request.META.get(self.header_name, '').lower() == self.header_value.lower():
-                request.is_secure = lambda: True
+                # NOTE: For Django 1.7+
+                if hasattr(request, '_get_scheme'):
+                    request._get_scheme = lambda: 'https'
+                else:
+                    request.is_secure = lambda: True
